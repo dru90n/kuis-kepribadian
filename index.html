@@ -27,7 +27,11 @@
   <p align=center><i><b>Isi pertanyaan dibawah dengan skala 1 s/d 5 <br>(1 = Sangat Setuju, 2 = Setuju, 3 = Netral, 4 = Tidak Setuju, 5 = Sangat tidak Setuju)</b></i></p>
   <form id="quizForm"></form>
   <div id="results" class="results" style="display: none;"></div>
-
+<div id="whatsappShareContainer" style="text-align: center; margin-top: 20px; display: none;">
+  <a id="whatsappShare" target="_blank" style="text-decoration: none; font-size: 16px; padding: 10px 20px; background: #25D366; color: white; border-radius: 8px;">
+    📤 Bagikan Hasil ke WhatsApp
+  </a>
+</div>
    <script>
     const questions = [
       { text: "Saya suka menjadi pusat perhatian.", trait: "Sanguinis" },
@@ -109,6 +113,11 @@ resultsDiv.innerHTML += `
   <p><strong>Tipe Dominan Anda:</strong> ${dominant}</p>
   <p>${traitDescriptions[dominant]}</p>
 `;
+      const resultText = sorted.map(([trait, score]) => `${trait} ${score}%`).join(', ');
+const shareMessage = `Hasil kuis kepribadian saya: ${resultText}. Coba juga di sini: https://namamu.github.io/quiz-kepribadian`;
+document.getElementById("whatsappShare").href = `https://wa.me/?text=${encodeURIComponent(shareMessage)}`;
+document.getElementById("whatsappShareContainer").style.display = "block";
+
       resultsDiv.style.display = "block";
       window.scrollTo({ top: resultsDiv.offsetTop, behavior: 'smooth' });
     };
