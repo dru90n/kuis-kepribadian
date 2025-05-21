@@ -78,7 +78,12 @@
   </div>`;
 
     const traitScores = { Sanguinis: 0, Plegmatis: 0, Koleris: 0, Melankolis: 0 };
-
+const traitDescriptions = {
+  Sanguinis: "Sanguinis adalah tipe yang ceria, penuh semangat, mudah bergaul, dan spontan. Mereka suka jadi pusat perhatian dan penuh energi.",
+  Plegmatis: "Plegmatis dikenal kalem, sabar, dan penyayang. Mereka pendengar yang baik dan cenderung menghindari konflik.",
+  Koleris: "Koleris adalah pemimpin alami, tegas, suka tantangan, dan fokus pada tujuan. Mereka cepat mengambil keputusan dan suka mengatur.",
+  Melankolis: "Melankolis adalah pemikir yang mendalam, perfeksionis, terorganisir, dan sensitif. Mereka menghargai ketertiban dan kualitas tinggi."
+};
     form.onsubmit = e => {
       e.preventDefault();
       Object.keys(traitScores).forEach(k => traitScores[k] = 0);
@@ -100,7 +105,10 @@
       });
 
       const dominant = sorted[0][0];
-      resultsDiv.innerHTML += `<p><strong>Tipe Dominan Anda:</strong> ${dominant}</p>`;
+resultsDiv.innerHTML += `
+  <p><strong>Tipe Dominan Anda:</strong> ${dominant}</p>
+  <p>${traitDescriptions[dominant]}</p>
+`;
       resultsDiv.style.display = "block";
       window.scrollTo({ top: resultsDiv.offsetTop, behavior: 'smooth' });
     };
