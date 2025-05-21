@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Kepribadian</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .intro-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .question-container {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .option:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .option input {
+            margin-right: 10px;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .progress-bar {
+            margin-bottom: 20px;
+            height: 10px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: #2ecc71;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .question-counter {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #7f8c8d;
+        }
+        
+        .result-container {
+            display: none;
+            padding: 30px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .personality-type {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .personality-description {
+            margin-bottom: 20px;
+        }
+        
+        .percentage-bar {
+            height: 20px;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        
+        .percentage-fill {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kuis Kepribadian</h1>
+    
+    <div class="intro-section">
+        <p>Selamat datang di kuis kepribadian! Anda akan menjawab 25 pertanyaan yang akan mengungkap kecenderungan kepribadian Anda berdasarkan 4 tipe: Sanguinis, Koleris, Plegmatis, dan Melankolis.</p>
+        <p><strong>Skala jawaban:</strong></p>
+        <ul>
+            <li>1 = Sangat Setuju</li>
+            <li>2 = Setuju</li>
+            <li>3 = Netral</li>
+            <li>4 = Tidak Setuju</li>
+            <li>5 = Sangat Tidak Setuju</li>
+        </ul>
+        <button id="start-btn">Mulai Kuis</button>
+    </div>
+    
+    <div id="quiz-container" style="display: none;">
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        <div class="question-counter" id="question-counter"></div>
+        
+        <div class="question-container">
+            <div class="question-text" id="question-text"></div>
+            <div class="options-container" id="options-container"></div>
+        </div>
+        
+        <div class="navigation-buttons">
+            <button id="prev-btn" disabled>Sebelumnya</button>
+            <button id="next-btn">Berikutnya</button>
+        </div>
+    </div>
+    
+    <div class="result-container" id="result-container">
+        <h2>Hasil Kuis Kepribadian</h2>
+        <div id="result-content"></div>
+    </div>
+
+    <script>
+        // Questions data - categorized by personality type
+        const questions = [
+            // Sanguinis questions (5)
+            { id: 1, text: "Saya mudah bergaul dan senang bertemu orang baru", category: "sanguinis", reversed: false },
+            { id: 5, text: "Saya sering dianggap sebagai orang yang energik dan bersemangat", category: "sanguinis", reversed: false },
+            { id: 9, text: "Saya mudah bosan dengan kegiatan yang monoton", category: "sanguinis", reversed: false },
+            { id: 13, text: "Saya sering membuat orang tertawa dengan cerita-cerita saya", category: "sanguinis", reversed: false },
+            { id: 17, text: "Saya senang menjadi pusat perhatian", category: "sanguinis", reversed: false },
+            { id: 21, text: "Saya mudah beradaptasi dengan situasi baru", category: "sanguinis", reversed: false },
+            { id: 25, text: "Saya senang memulai percakapan dengan orang asing", category: "sanguinis", reversed: false },
+            
+            // Koleris questions (6)
+            { id: 2, text: "Saya cenderung mengambil alih kepemimpinan dalam kelompok", category: "koleris", reversed: false },
+            { id: 6, text: "Saya membuat keputusan dengan cepat dan tegas", category: "koleris", reversed: false },
+            { id: 10, text: "Saya suka menetapkan target yang menantang", category: "koleris", reversed: false },
+            { id: 14, text: "Saya tidak sabar dengan orang yang bekerja lambat", category: "koleris", reversed: false },
+            { id: 18, text: "Saya fokus pada hasil daripada proses", category: "koleris", reversed: false },
+            { id: 22, text: "Saya senang memecahkan masalah yang kompleks", category: "koleris", reversed: false },
+            
+            // Plegmatis questions (6)
+            { id: 3, text: "Saya lebih memilih menghindari konflik", category: "plegmatis", reversed: false },
+            { id: 7, text: "Saya merasa nyaman dengan rutinitas yang stabil", category: "plegmatis", reversed: false },
+            { id: 11, text: "Saya lebih suka mendengarkan daripada memimpin pembicaraan", category: "plegmatis", reversed: false },
+            { id: 15, text: "Saya menghargai harmoni lebih dari segalanya", category: "plegmatis", reversed: false },
+            { id: 19, text: "Saya lebih memilih mengalah daripada berselisih", category: "plegmatis", reversed: false },
+            { id: 23, text: "Saya merasa nyaman dengan kehidupan yang sederhana", category: "plegmatis", reversed: false },
+            
+            // Melankolis questions (6)
+            { id: 4, text: "Saya sangat memperhatikan detail dan presisi", category: "melankolis", reversed: false },
+            { id: 8, text: "Saya sering merenungkan makna hidup secara mendalam", category: "melankolis", reversed: false },
+            { id: 12, text: "Saya perfeksionis dalam pekerjaan saya", category: "melankolis", reversed: false },
+            { id: 16, text: "Saya sering memikirkan masa lalu dengan detail", category: "melankolis", reversed: false },
+            { id: 20, text: "Saya sering merasa khawatir tentang masa depan", category: "melankolis", reversed: false },
+            { id: 24, text: "Saya sangat sensitif terhadap kritik", category: "melankolis", reversed: false }
+        ];
+
+        // Shuffle questions (optional)
+        questions.sort(() => Math.random() - 0.5);
+
+        // Variables
+        let currentQuestionIndex = 0;
+        let answers = [];
+        const quizContainer = document.getElementById('quiz-container');
+        const resultContainer = document.getElementById('result-container');
+        const startBtn = document.getElementById('start-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const progressBar = document.getElementById('progress');
+        const questionCounter = document.getElementById('question-counter');
+        const resultContent = document.getElementById('result-content');
+
+        // Start quiz
+        startBtn.addEventListener('click', () => {
+            document.querySelector('.intro-section').style.display = 'none';
+            quizContainer.style.display = 'block';
+            showQuestion();
+        });
+
+        // Show current question
+        function showQuestion() {
+            const question = questions[currentQuestionIndex];
+            questionText.textContent = question.text;
+            optionsContainer.innerHTML = '';
+            
+            // Create options (1-5)
+            for (let i = 1; i <= 5; i++) {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = 'answer';
+                input.id = `option-${i}`;
+                input.value = i;
+                
+                // Check if already answered
+                if (answers[currentQuestionIndex] && answers[currentQuestionIndex].answer == i) {
+                    input.checked = true;
+                }
+                
+                const label = document.createElement('label');
+                label.htmlFor = `option-${i}`;
+                
+                // Set labels based on scale
+                switch(i) {
+                    case 1: label.textContent = '1 - Sangat Setuju'; break;
+                    case 2: label.textContent = '2 - Setuju'; break;
+                    case 3: label.textContent = '3 - Netral'; break;
+                    case 4: label.textContent = '4 - Tidak Setuju'; break;
+                    case 5: label.textContent = '5 - Sangat Tidak Setuju'; break;
+                }
+                
+                optionDiv.appendChild(input);
+                optionDiv.appendChild(label);
+                optionsContainer.appendChild(optionDiv);
+            }
+            
+            // Update progress
+            progressBar.style.width = `${(currentQuestionIndex / questions.length) * 100}%`;
+            questionCounter.textContent = `Pertanyaan ${currentQuestionIndex + 1} dari ${questions.length}`;
+            
+            // Update buttons
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.textContent = currentQuestionIndex === questions.length - 1 ? 'Lihat Hasil' : 'Berikutnya';
+        }
+
+        // Save answer
+        function saveAnswer() {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (selectedOption) {
+                answers[currentQuestionIndex] = {
+                    questionId: questions[currentQuestionIndex].id,
+                    answer: parseInt(selectedOption.value),
+                    category: questions[currentQuestionIndex].category,
+                    reversed: questions[currentQuestionIndex].reversed
+                };
+            }
+        }
+
+        // Navigation
+        prevBtn.addEventListener('click', () => {
+            saveAnswer();
+            currentQuestionIndex--;
+            showQuestion();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            saveAnswer();
+            
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion();
+            } else {
+                showResults();
+            }
+        });
+
+        // Calculate and show results
+        function showResults() {
+            quizContainer.style.display = 'none';
+            resultContainer.style.display = 'block';
+            
+            // Calculate scores
+            const scores = {
+                sanguinis: 0,
+                koleris: 0,
+                plegmatis: 0,
+                melankolis: 0
+            };
+            
+            // Count answers per category
+            answers.forEach(answer => {
+                // Adjust score if question is reversed
+                const value = answer.reversed ? (6 - answer.answer) : answer.answer;
+                scores[answer.category] += value;
+            });
+            
+            // Calculate percentages
+            const total = Object.values(scores).reduce((sum, score) => sum + score, 0);
+            const percentages = {
+                sanguinis: Math.round((scores.sanguinis / total) * 1000) / 10,
+                koleris: Math.round((scores.koleris / total) * 1000) / 10,
+                plegmatis: Math.round((scores.plegmatis / total) * 1000) / 10,
+                melankolis: Math.round((scores.melankolis / total) * 1000) / 10
+            };
+            
+            // Determine dominant personality
+            const dominant = Object.keys(percentages).reduce((a, b) => 
+                percentages[a] > percentages[b] ? a : b
+            );
+            
+            // Display results
+            let resultHTML = `
+                <div class="personality-type">Kepribadian Dominan: ${capitalizeFirstLetter(dominant)}</div>
+                <div class="personality-description">${getPersonalityDescription(dominant)}</div>
+            `;
+            
+            // Add percentage bars for each type
+            for (const [type, percentage] of Object.entries(percentages)) {
+                resultHTML += `
+                    <div>
+                        <div>${capitalizeFirstLetter(type)}: ${percentage}%</div>
+                        <div class="percentage-bar">
+                            <div class="percentage-fill" style="width: ${percentage}%; background-color: ${getPersonalityColor(type)};">
+                                ${percentage}%
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            resultContent.innerHTML = resultHTML;
+        }
+
+        // Helper functions
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        function getPersonalityColor(type) {
+            const colors = {
+                sanguinis: '#e74c3c',
+                koleris: '#3498db',
+                plegmatis: '#2ecc71',
+                melankolis: '#9b59b6'
+            };
+            return colors[type];
+        }
+
+        function getPersonalityDescription(type) {
+            const descriptions = {
+                sanguinis: "Anda orang yang bersemangat, hidup, dan menyenangkan! Anda membawa energi positif ke mana pun Anda pergi dan mudah bergaul dengan berbagai jenis orang.",
+                koleris: "Anda pemimpin alami yang berorientasi pada tujuan! Anda memiliki tekad kuat dan kemampuan mengambil keputusan yang cepat.",
+                plegmatis: "Anda pribadi yang tenang, sabar, dan harmonis! Anda membawa kedamaian dalam hubungan dan situasi sosial.",
+                melankolis: "Anda penyelaras, analitis, dan penuh pertimbangan! Anda memiliki perhatian terhadap detail dan standar yang tinggi."
+            };
+            return descriptions[type];
+        }
+    </script>
+</body>
+</html>
