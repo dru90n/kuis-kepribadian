@@ -23,7 +23,7 @@
   <form id="quizForm"></form>
   <div id="results" class="results" style="display: none;"></div>
 
-  <script>
+   <script>
     const questions = [
       { text: "Saya suka menjadi pusat perhatian.", trait: "Sanguinis" },
       { text: "Saya mudah bergaul dengan orang baru.", trait: "Sanguinis" },
@@ -52,10 +52,6 @@
       { text: "Saya mudah memaafkan dan memahami orang lain.", trait: "Plegmatis" }
     ];
 
-    while (questions.length < 25) {
-      questions.push(...questions.slice(0, 25 - questions.length));
-    }
-
     const form = document.getElementById("quizForm");
     questions.forEach((q, i) => {
       const div = document.createElement("div");
@@ -71,9 +67,10 @@
       form.appendChild(div);
     });
 
+    form.innerHTML += '<button type="submit">Lihat Hasil</button>';
+
     const traitScores = { Sanguinis: 0, Plegmatis: 0, Koleris: 0, Melankolis: 0 };
 
-    form.innerHTML += '<button type="submit">Lihat Hasil</button>';
     form.onsubmit = e => {
       e.preventDefault();
       Object.keys(traitScores).forEach(k => traitScores[k] = 0);
@@ -91,16 +88,14 @@
 
       sorted.forEach(([trait, score]) => {
         const percent = Math.round(score / total * 100);
-        resultsDiv.innerHTML += `<div><strong>${trait}</strong> (${percent}%)
-          <div class="bar ${trait.toLowerCase()}" style="width: ${percent}%;"></div>
-        </div>`;
+        resultsDiv.innerHTML += `<div><strong>${trait}</strong> (${percent}%)<div class="bar ${trait.toLowerCase()}" style="width: ${percent}%;"></div></div>`;
       });
 
       const dominant = sorted[0][0];
       resultsDiv.innerHTML += `<p><strong>Tipe Dominan Anda:</strong> ${dominant}</p>`;
       resultsDiv.style.display = "block";
       window.scrollTo({ top: resultsDiv.offsetTop, behavior: 'smooth' });
-    }
+    };
   </script>
 </body>
 </html>
