@@ -114,7 +114,7 @@ resultsDiv.innerHTML += `
   <p>${traitDescriptions[dominant]}</p>
 `;
       const resultText = sorted.map(([trait, score]) => `${trait} ${score}%`).join(', ');
-const shareMessage = `Hasil kuis kepribadian saya: ${resultText}. Coba juga di sini: https://namamu.github.io/quiz-kepribadian`;
+const shareMessage = `Hasil kuis kepribadian saya: ${resultText}.`;
 document.getElementById("whatsappShare").href = `https://wa.me/?text=${encodeURIComponent(shareMessage)}`;
 document.getElementById("whatsappShareContainer").style.display = "block";
 
