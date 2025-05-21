@@ -6,11 +6,11 @@
   <title>Kuis Kepribadian 4 Tipe by PLAYGIRLS Models</title>
   <style>
     body {
-  font-family: Arial, sans-serif;
-  margin: 40px auto;
-  max-width: 800px;
-  background: #A4A4A4;
-}
+      font-family: Arial, sans-serif;
+      margin: 40px auto;
+      max-width: 800px;
+      background: #A4A4A4;
+    }
     h1 { text-align: center; }
     .question { margin-bottom: 20px; background: white; padding: 15px; border-radius: 8px; }
     .scale { display: flex; justify-content: space-between; margin-top: 10px; }
@@ -27,100 +27,134 @@
   <p align=center><i><b>Isi pertanyaan dibawah dengan skala 1 s/d 5 <br>(1 = Sangat Setuju, 2 = Setuju, 3 = Netral, 4 = Tidak Setuju, 5 = Sangat tidak Setuju)</b></i></p>
   <form id="quizForm"></form>
   <div id="results" class="results" style="display: none;"></div>
-<div id="whatsappShareContainer" style="text-align: center; margin-top: 20px; display: none;">
-  <a id="whatsappShare" target="_blank" style="text-decoration: none; font-size: 16px; padding: 10px 20px; background: #25D366; color: white; border-radius: 8px;">
-    📤 Bagikan Hasil ke WhatsApp
-  </a>
-</div>
-   <script>
-    const questions = [
-      { text: "Saya suka menjadi pusat perhatian.", trait: "Sanguinis" },
-      { text: "Saya mudah bergaul dengan orang baru.", trait: "Sanguinis" },
-      { text: "Saya optimis dan ceria dalam berbagai situasi.", trait: "Sanguinis" },
-      { text: "Saya suka berbicara dan bercerita.", trait: "Sanguinis" },
-      { text: "Saya cenderung menghindari konflik.", trait: "Plegmatis" },
-      { text: "Saya sabar dan tenang menghadapi masalah.", trait: "Plegmatis" },
-      { text: "Saya pendengar yang baik bagi teman-teman.", trait: "Plegmatis" },
-      { text: "Saya menjaga keharmonisan dalam kelompok.", trait: "Plegmatis" },
-      { text: "Saya suka mengambil alih kepemimpinan.", trait: "Koleris" },
-      { text: "Saya cepat membuat keputusan.", trait: "Koleris" },
-      { text: "Saya suka menantang diri sendiri untuk mencapai tujuan.", trait: "Koleris" },
-      { text: "Saya tidak mudah menyerah saat menghadapi kesulitan.", trait: "Koleris" },
-      { text: "Saya perfeksionis dan sangat memperhatikan detail.", trait: "Melankolis" },
-      { text: "Saya sering menganalisa sesuatu secara mendalam.", trait: "Melankolis" },
-      { text: "Saya cenderung introvert dan pemikir.", trait: "Melankolis" },
-      { text: "Saya sangat bertanggung jawab dengan apa yang saya kerjakan.", trait: "Melankolis" },
-      { text: "Saya cepat bersemangat saat melakukan sesuatu yang baru.", trait: "Sanguinis" },
-      { text: "Saya mudah menyesuaikan diri dalam lingkungan baru.", trait: "Plegmatis" },
-      { text: "Saya suka mengatur dan mengorganisasi orang lain.", trait: "Koleris" },
-      { text: "Saya sering merasa khawatir tentang hal-hal kecil.", trait: "Melankolis" },
-      { text: "Saya suka mencoba hal-hal baru dan berpetualang.", trait: "Sanguinis" },
-      { text: "Saya cenderung mengalah demi menjaga kedamaian.", trait: "Plegmatis" },
-      { text: "Saya suka tantangan dan kompetisi.", trait: "Koleris" },
-      { text: "Saya sangat terorganisir dan menyukai aturan yang jelas.", trait: "Melankolis" },
-      { text: "Saya mudah memaafkan dan memahami orang lain.", trait: "Plegmatis" }
-    ];
+  <div id="whatsappShareContainer" style="text-align: center; margin-top: 20px; display: none;">
+    <a id="whatsappShare" target="_blank" style="text-decoration: none; font-size: 16px; padding: 10px 20px; background: #25D366; color: white; border-radius: 8px;">
+      📤 Bagikan Hasil ke WhatsApp
+    </a>
+  </div>
+<script>
+  const questions = [
+    { text: "Saya suka menjadi pusat perhatian.", trait: "Sanguinis" },
+    { text: "Saya mudah bergaul dengan orang baru.", trait: "Sanguinis" },
+    { text: "Saya optimis dan ceria dalam berbagai situasi.", trait: "Sanguinis" },
+    { text: "Saya suka berbicara dan bercerita.", trait: "Sanguinis" },
+    { text: "Saya cenderung menghindari konflik.", trait: "Plegmatis" },
+    { text: "Saya sabar dan tenang menghadapi masalah.", trait: "Plegmatis" },
+    { text: "Saya pendengar yang baik bagi teman-teman.", trait: "Plegmatis" },
+    { text: "Saya menjaga keharmonisan dalam kelompok.", trait: "Plegmatis" },
+    { text: "Saya suka mengambil alih kepemimpinan.", trait: "Koleris" },
+    { text: "Saya cepat membuat keputusan.", trait: "Koleris" },
+    { text: "Saya suka menantang diri sendiri untuk mencapai tujuan.", trait: "Koleris" },
+    { text: "Saya tidak mudah menyerah saat menghadapi kesulitan.", trait: "Koleris" },
+    { text: "Saya perfeksionis dan sangat memperhatikan detail.", trait: "Melankolis" },
+    { text: "Saya sering menganalisa sesuatu secara mendalam.", trait: "Melankolis" },
+    { text: "Saya cenderung introvert dan pemikir.", trait: "Melankolis" },
+    { text: "Saya sangat bertanggung jawab dengan apa yang saya kerjakan.", trait: "Melankolis" },
+    { text: "Saya cepat bersemangat saat melakukan sesuatu yang baru.", trait: "Sanguinis" },
+    { text: "Saya mudah menyesuaikan diri dalam lingkungan baru.", trait: "Plegmatis" },
+    { text: "Saya suka mengatur dan mengorganisasi orang lain.", trait: "Koleris" },
+    { text: "Saya sering merasa khawatir tentang hal-hal kecil.", trait: "Melankolis" },
+    { text: "Saya suka mencoba hal-hal baru dan berpetualang.", trait: "Sanguinis" },
+    { text: "Saya cenderung mengalah demi menjaga kedamaian.", trait: "Plegmatis" },
+    { text: "Saya suka tantangan dan kompetisi.", trait: "Koleris" },
+    { text: "Saya sangat terorganisir dan menyukai aturan yang jelas.", trait: "Melankolis" },
+    { text: "Saya mudah memaafkan dan memahami orang lain.", trait: "Plegmatis" }
+  ];
 
-    const form = document.getElementById("quizForm");
-    questions.forEach((q, i) => {
-      const div = document.createElement("div");
-      div.className = "question";
-      div.innerHTML = `<strong>${i + 1}. ${q.text}</strong>
-        <div class="scale">
-          ${[1,2,3,4,5].map(n => `
-            <label>
-              <input type="radio" name="q${i}" value="${n}" required /> ${n}
-            </label>
-          `).join('')}
-        </div>`;
-      form.appendChild(div);
+  const form = document.getElementById("quizForm");
+  questions.forEach((q, i) => {
+    const div = document.createElement("div");
+    div.className = "question";
+    div.innerHTML = `<strong>${i + 1}. ${q.text}</strong>
+      <div class="scale">
+        ${[1,2,3,4,5].map(n => `
+          <label>
+            <input type="radio" name="q${i}" value="${n}" required /> ${n}
+          </label>
+        `).join('')}
+      </div>`;
+    form.appendChild(div);
+  });
+
+  form.innerHTML += `
+    <div style="text-align: center; margin-top: 20px;">
+      <button type="submit" style="padding: 10px 20px; font-size: 16px;">Lihat Hasil</button>
+    </div>`;
+
+  const traitScores = { Sanguinis: 0, Plegmatis: 0, Koleris: 0, Melankolis: 0 };
+  const traitDescriptions = {
+    Sanguinis: "Sanguinis adalah tipe yang ceria, penuh semangat, mudah bergaul, dan spontan. Mereka suka jadi pusat perhatian dan penuh energi.",
+    Plegmatis: "Plegmatis dikenal kalem, sabar, dan penyayang. Mereka pendengar yang baik dan cenderung menghindari konflik.",
+    Koleris: "Koleris adalah pemimpin alami, tegas, suka tantangan, dan fokus pada tujuan. Mereka cepat mengambil keputusan dan suka mengatur.",
+    Melankolis: "Melankolis adalah pemikir yang mendalam, perfeksionis, terorganisir, dan sensitif. Mereka menghargai ketertiban dan kualitas tinggi."
+  };
+
+  // Fungsi pembulatan supaya total 100%
+  function calculatePercentages(traits) {
+    const totalScore = Object.values(traits).reduce((a, b) => a + b, 0);
+    const percentages = {};
+
+    for (const trait in traits) {
+      percentages[trait] = (traits[trait] / totalScore) * 100;
+    }
+
+    const rounded = {};
+    let sumRounded = 0;
+    for (const trait in percentages) {
+      rounded[trait] = Math.floor(percentages[trait]);
+      sumRounded += rounded[trait];
+    }
+
+    let remainder = 100 - sumRounded;
+
+    const decimals = Object.entries(percentages).map(([trait, val]) => ({
+      trait,
+      decimal: val - Math.floor(val),
+    })).sort((a, b) => b.decimal - a.decimal);
+
+    for (let i = 0; i < remainder; i++) {
+      rounded[decimals[i].trait]++;
+    }
+
+    return rounded;
+  }
+
+  form.onsubmit = e => {
+    e.preventDefault();
+    Object.keys(traitScores).forEach(k => traitScores[k] = 0);
+    const data = new FormData(form);
+
+    [...data.entries()].forEach(([k, v], i) => {
+      const trait = questions[i].trait;
+      traitScores[trait] += parseInt(v);
     });
 
-    form.innerHTML += `
-  <div style="text-align: center; margin-top: 20px;">
-    <button type="submit" style="padding: 10px 20px; font-size: 16px;">Lihat Hasil</button>
-  </div>`;
+    const resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML = "<h2>Hasil Kepribadian Anda:</h2>";
 
-    const traitScores = { Sanguinis: 0, Plegmatis: 0, Koleris: 0, Melankolis: 0 };
-const traitDescriptions = {
-  Sanguinis: "Sanguinis adalah tipe yang ceria, penuh semangat, mudah bergaul, dan spontan. Mereka suka jadi pusat perhatian dan penuh energi.",
-  Plegmatis: "Plegmatis dikenal kalem, sabar, dan penyayang. Mereka pendengar yang baik dan cenderung menghindari konflik.",
-  Koleris: "Koleris adalah pemimpin alami, tegas, suka tantangan, dan fokus pada tujuan. Mereka cepat mengambil keputusan dan suka mengatur.",
-  Melankolis: "Melankolis adalah pemikir yang mendalam, perfeksionis, terorganisir, dan sensitif. Mereka menghargai ketertiban dan kualitas tinggi."
-};
-    form.onsubmit = e => {
-      e.preventDefault();
-      Object.keys(traitScores).forEach(k => traitScores[k] = 0);
-      const data = new FormData(form);
+    const adjustedPercentages = calculatePercentages(traitScores);
 
-      [...data.entries()].forEach(([k, v], i) => {
-        const trait = questions[i].trait;
-        traitScores[trait] += parseInt(v);
-      });
+    const sorted = Object.entries(adjustedPercentages)
+      .sort((a,b) => b[1] - a[1]);
 
-      const total = Object.values(traitScores).reduce((a,b) => a + b, 0);
-      const resultsDiv = document.getElementById("results");
-      resultsDiv.innerHTML = "<h2>Hasil Kepribadian Anda:</h2>";
-      const sorted = Object.entries(traitScores).sort((a,b) => b[1] - a[1]);
+    sorted.forEach(([trait, percent]) => {
+      resultsDiv.innerHTML += `<div><strong>${trait}</strong> (${percent}%)<div class="bar ${trait.toLowerCase()}" style="width: ${percent}%;"></div></div>`;
+    });
 
-      sorted.forEach(([trait, score]) => {
-        const percent = Math.round(score / total * 100);
-        resultsDiv.innerHTML += `<div><strong>${trait}</strong> (${percent}%)<div class="bar ${trait.toLowerCase()}" style="width: ${percent}%;"></div></div>`;
-      });
+    const dominant = sorted[0][0];
+    resultsDiv.innerHTML += `
+      <p><strong>Tipe Dominan Anda:</strong> ${dominant}</p>
+      <p>${traitDescriptions[dominant]}</p>
+    `;
 
-      const dominant = sorted[0][0];
-resultsDiv.innerHTML += `
-  <p><strong>Tipe Dominan Anda:</strong> ${dominant}</p>
-  <p>${traitDescriptions[dominant]}</p>
-`;
-      const resultText = sorted.map(([trait, score]) => `${trait} ${score}%`).join(', ');
-const shareMessage = `Hasil kuis kepribadian saya: ${resultText}.`;
-document.getElementById("whatsappShare").href = `https://wa.me/?text=${encodeURIComponent(shareMessage)}`;
-document.getElementById("whatsappShareContainer").style.display = "block";
+    const resultText = sorted.map(([trait, percent]) => `${trait} ${percent}%`).join(', ');
+    const shareMessage = `Hasil kuis kepribadian saya: ${resultText}.`;
+    document.getElementById("whatsappShare").href = `https://wa.me/?text=${encodeURIComponent(shareMessage)}`;
+    document.getElementById("whatsappShareContainer").style.display = "block";
 
-      resultsDiv.style.display = "block";
-      window.scrollTo({ top: resultsDiv.offsetTop, behavior: 'smooth' });
-    };
-  </script>
+    resultsDiv.style.display = "block";
+    window.scrollTo({ top: resultsDiv.offsetTop, behavior: 'smooth' });
+  };
+</script>
 </body>
 </html>
