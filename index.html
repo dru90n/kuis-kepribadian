@@ -67,7 +67,10 @@
       form.appendChild(div);
     });
 
-    form.innerHTML += '<button type="submit">Lihat Hasil</button>';
+    form.innerHTML += `
+  <div style="text-align: center; margin-top: 20px;">
+    <button type="submit" style="padding: 10px 20px; font-size: 16px;">Lihat Hasil</button>
+  </div>`;
 
     const traitScores = { Sanguinis: 0, Plegmatis: 0, Koleris: 0, Melankolis: 0 };
 
