@@ -191,7 +191,7 @@
     <div class="container" id="intro-container">
         <h1>Kuis Kepribadian by PLAYGIRLS Models</h1>
         <div class="intro-section">
-            <p>Temukan tipe kepribadian Anda dengan menjawab 25 pertanyaan berikut. Hasil akan menunjukkan persentase kecenderungan Anda terhadap 4 tipe kepribadian</p>
+            <p>Temukan tipe kepribadian Anda dengan menjawab 28 pertanyaan berikut. Hasil akan menunjukkan persentase kecenderungan Anda terhadap 4 tipe kepribadian</p>
             <!-- <ul style="margin-bottom: 15px; padding-left: 20px;">
                 <li><strong>Sanguinis</strong>: Energik, bersemangat, mudah bergaul</li>
                 <li><strong>Koleris</strong>: Tegas, berorientasi tujuan, pemimpin</li>
@@ -237,39 +237,35 @@
     <script>
         // Data pertanyaan
         const questions = [
-            // Sanguinis
-            { id: 1, text: "Saya mudah bergaul dan senang bertemu orang baru", category: "sanguinis", reversed: false },
-            { id: 2, text: "Saya sering dianggap sebagai orang yang energik dan bersemangat", category: "sanguinis", reversed: false },
-            { id: 3, text: "Saya mudah bosan dengan kegiatan yang monoton", category: "sanguinis", reversed: false },
-            { id: 4, text: "Saya sering membuat orang tertawa dengan cerita-cerita saya", category: "sanguinis", reversed: false },
-            { id: 5, text: "Saya senang menjadi pusat perhatian", category: "sanguinis", reversed: false },
-            { id: 6, text: "Saya mudah beradaptasi dengan situasi baru", category: "sanguinis", reversed: false },
-            { id: 7, text: "Saya senang memulai percakapan dengan orang asing", category: "sanguinis", reversed: false },
-            
-            // Koleris
-            { id: 8, text: "Saya cenderung mengambil alih kepemimpinan dalam kelompok", category: "koleris", reversed: false },
-            { id: 9, text: "Saya membuat keputusan dengan cepat dan tegas", category: "koleris", reversed: false },
-            { id: 10, text: "Saya suka menetapkan target yang menantang", category: "koleris", reversed: false },
-            { id: 11, text: "Saya tidak sabar dengan orang yang bekerja lambat", category: "koleris", reversed: false },
-            { id: 12, text: "Saya fokus pada hasil daripada proses", category: "koleris", reversed: false },
-            { id: 13, text: "Saya senang memecahkan masalah yang kompleks", category: "koleris", reversed: false },
-            
-            // Plegmatis
-            { id: 14, text: "Saya lebih memilih menghindari konflik", category: "plegmatis", reversed: false },
-            { id: 15, text: "Saya merasa nyaman dengan rutinitas yang stabil", category: "plegmatis", reversed: false },
-            { id: 16, text: "Saya lebih suka mendengarkan daripada memimpin pembicaraan", category: "plegmatis", reversed: false },
-            { id: 17, text: "Saya menghargai harmoni lebih dari segalanya", category: "plegmatis", reversed: false },
-            { id: 18, text: "Saya lebih memilih mengalah daripada berselisih", category: "plegmatis", reversed: false },
-            { id: 19, text: "Saya merasa nyaman dengan kehidupan yang sederhana", category: "plegmatis", reversed: false },
-            
-            // Melankolis
-            { id: 20, text: "Saya sangat memperhatikan detail dan presisi", category: "melankolis", reversed: false },
-            { id: 21, text: "Saya sering merenungkan makna hidup secara mendalam", category: "melankolis", reversed: false },
-            { id: 22, text: "Saya perfeksionis dalam pekerjaan saya", category: "melankolis", reversed: false },
-            { id: 23, text: "Saya sering memikirkan masa lalu dengan detail", category: "melankolis", reversed: false },
-            { id: 24, text: "Saya sering merasa khawatir tentang masa depan", category: "melankolis", reversed: false },
-            { id: 25, text: "Saya sangat sensitif terhadap kritik", category: "melankolis", reversed: false }
-        ];
+    // Pertanyaan sanguinis yang sudah ada (7 pertanyaan)...
+    
+    // Koleris (menambahkan 1 pertanyaan baru)
+    { id: 8, text: "Saya cenderung mengambil alih kepemimpinan dalam kelompok", category: "koleris", reversed: false },
+    { id: 9, text: "Saya membuat keputusan dengan cepat dan tegas", category: "koleris", reversed: false },
+    { id: 10, text: "Saya suka menetapkan target yang menantang", category: "koleris", reversed: false },
+    { id: 11, text: "Saya tidak sabar dengan orang yang bekerja lambat", category: "koleris", reversed: false },
+    { id: 12, text: "Saya fokus pada hasil daripada proses", category: "koleris", reversed: false },
+    { id: 13, text: "Saya senang memecahkan masalah yang kompleks", category: "koleris", reversed: false },
+    { id: 26, text: "Saya cenderung langsung mengambil tindakan ketika melihat masalah", category: "koleris", reversed: false },
+    
+    // Plegmatis (menambahkan 1 pertanyaan baru)
+    { id: 14, text: "Saya lebih memilih menghindari konflik", category: "plegmatis", reversed: false },
+    { id: 15, text: "Saya merasa nyaman dengan rutinitas yang stabil", category: "plegmatis", reversed: false },
+    { id: 16, text: "Saya lebih suka mendengarkan daripada memimpin pembicaraan", category: "plegmatis", reversed: false },
+    { id: 17, text: "Saya menghargai harmoni lebih dari segalanya", category: "plegmatis", reversed: false },
+    { id: 18, text: "Saya lebih memilih mengalah daripada berselisih", category: "plegmatis", reversed: false },
+    { id: 19, text: "Saya merasa nyaman dengan kehidupan yang sederhana", category: "plegmatis", reversed: false },
+    { id: 27, text: "Saya lebih suka bekerja dengan tempo yang santai tanpa tekanan", category: "plegmatis", reversed: false },
+    
+    // Melankolis (menambahkan 1 pertanyaan baru)
+    { id: 20, text: "Saya sangat memperhatikan detail dan presisi", category: "melankolis", reversed: false },
+    { id: 21, text: "Saya sering merenungkan makna hidup secara mendalam", category: "melankolis", reversed: false },
+    { id: 22, text: "Saya perfeksionis dalam pekerjaan saya", category: "melankolis", reversed: false },
+    { id: 23, text: "Saya sering memikirkan masa lalu dengan detail", category: "melankolis", reversed: false },
+    { id: 24, text: "Saya sering merasa khawatir tentang masa depan", category: "melankolis", reversed: false },
+    { id: 25, text: "Saya sangat sensitif terhadap kritik", category: "melankolis", reversed: false },
+    { id: 28, text: "Saya sering menganalisis kesalahan kecil yang saya buat", category: "melankolis", reversed: false }
+];
 
         // Acak urutan pertanyaan
         questions.sort(() => Math.random() - 0.5);
