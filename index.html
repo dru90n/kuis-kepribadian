@@ -121,6 +121,22 @@
             align-items: center;
             gap: 5px;
         }
+input-section {
+            margin: 20px 0;
+        }
+        .input-section label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .input-section input, .input-section select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
@@ -129,6 +145,22 @@
             <h1>Kuis Kepribadian | Playgirls Models</h1>
             <p>Tes ini akan mengidentifikasi tipe kepribadian Anda berdasarkan 4 kategori: Sanguinis, Koleris, Plegmatis, dan Melankolis.</p>
             <p>Total ada 28 pertanyaan. Jawablah dengan jujur sesuai dengan diri Anda.</p>
+            
+            <div class="input-section">
+                <label for="user-name">Nama Anda:</label>
+                <input type="text" id="user-name" placeholder="Masukkan nama Anda">
+                
+                <label for="user-city">Kota:</label>
+                <select id="user-city">
+                    <option value="">Pilih kota</option>
+                    <option value="Malang">Malang</option>
+                    <option value="Semarang">Semarang</option>
+                    <option value="Jakarta">Jakarta</option>
+                    <option value="Bali">Bali</option>
+                    <option value="Surabaya">Surabaya</option>
+                </select>
+            </div>
+
             <button id="start-btn">Mulai Tes</button>
         </div>
 
@@ -415,32 +447,50 @@
             });
         }
 function shareWhatsApp() {
-    // Ambil semua data persentase
-    const percentageItems = document.querySelectorAll('.percentage-item');
-    let percentagesText = '';
-    
-    // Warna emoji untuk setiap tipe
-    const emojiMap = {
-        sanguinis: '🟥',
-        koleris: '🟦',
-        plegmatis: '🟩',
-        melankolis: '🟪'
-    };
-    
-    // Format setiap baris persentase
-    percentageItems.forEach(item => {
-        const type = item.querySelector('span:first-child').textContent.toLowerCase();
-        const value = item.querySelector('span:last-child').textContent;
-        percentagesText += `${emojiMap[type]} ${type.charAt(0).toUpperCase() + type.slice(1)}: ${value}\n`;
-    });
-    
-    // Format teks lengkap
-    const text = `📊 Hasil Kuis Kepribadian Saya:\n\n${percentagesText}\n✨ ${document.getElementById('result-title').textContent}\n\n🔹 Coba kuis ini juga: ${window.location.href}`;
-    
-    // Encode untuk URL WhatsApp
-    const encodedText = encodeURIComponent(text);
-    window.open(`https://wa.me/?text=${encodedText}`, '_blank');
-}
+            const userName = document.getElementById('user-name').value || 'Anonymous';
+            const userCity = document.getElementById('user-city').value || 'unknown city';
+            
+            const percentageElements = document.querySelectorAll('.percentage-item');
+            let hasilText = `📊 Hasil Kuis Kepribadian ${userName} (${userCity}):\n\n`;
+            
+            const typeEmojis = {
+                sanguinis: "🟥",
+                koleris: "🟦", 
+                plegmatis: "🟩",
+                melankolis: "🟪"
+            };
+
+            percentageElements.forEach(el => {
+                const type = el.querySelector('span:first-child').textContent.toLowerCase();
+                const percent = el.querySelector('span:last-child').textContent;
+                hasilText += `${typeEmojis[type]} ${type.toUpperCase()}: ${percent}\n`;
+            });
+
+            hasilText += `\n✨ ${document.getElementById('result-title').textContent}\n\n` + 
+                        `🔹 Coba kuis ini juga: ${window.location.href}`;
+
+            window.open(`https://wa.me/?text=${encodeURIComponent(hasilText)}`, '_blank');
+        }
+
+        // Modify the startQuiz function to validate inputs:
+        function startQuiz() {
+            const userName = document.getElementById('user-name').value;
+            const userCity = document.getElementById('user-city').value;
+            
+            if (!userName) {
+                alert('Silakan masukkan nama Anda');
+                return;
+            }
+            
+            if (!userCity) {
+                alert('Silakan pilih kota');
+                return;
+            }
+            
+            introContainer.classList.add('hidden');
+            quizContainer.classList.remove('hidden');
+            showQuestion();
+        }
         function restartQuiz() {
             currentQuestionIndex = 0;
             answers = Array(shuffledQuestions.length).fill(null);
