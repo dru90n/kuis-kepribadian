@@ -152,9 +152,12 @@
                 <h4>Komposisi Kepribadian:</h4>
                 <div id="percentages-container"></div>
             </div>
-            
-            <button id="whatsapp-share">Share via WhatsApp</button>
+      <div id="result-container" class="hidden">
+  <!-- ... konten hasil lainnya ... -->
+  
+  <button id="whatsapp-share">📱 Share via WhatsApp</button> <!-- BARIS INI DITAMBAHKAN -->
   <button id="restart-btn">Ulangi Tes</button>
+</div>
         </div>
     </div>
 
@@ -420,7 +423,26 @@ document.getElementById('whatsapp-share').addEventListener('click', function() {
   const shareUrl = `https://wa.me/?text=${encodeURIComponent(resultText)}`;
   window.open(shareUrl, '_blank');
 });
+// [Kode sebelumnya...]
 
+// ===== TAMBAHKAN KODE INI DI BARIS TERAKHIR SEBELUM </script> =====
+document.getElementById('whatsapp-share').addEventListener('click', function() {
+  const persentase = document.getElementById('percentages-container').innerText;
+  const dominant = document.getElementById('result-title').innerText;
+  
+  const text = `Kuis Kepribadian - Sanguinis, Koleris, Plegmatis, Melankolis  
+dru90n.github.io
+
+Hasil Kuis Kepribadian Saya:
+
+${persentase}
+
+${dominant}
+
+Coba kuis ini juga: ${window.location.href}`;
+
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
+});
     </script>
 </body>
 </html>
