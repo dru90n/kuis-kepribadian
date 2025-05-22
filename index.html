@@ -11,9 +11,10 @@
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
+            background-color: #f5f5f5;
         }
         .container {
-            background-color: #f9f9f9;
+            background-color: white;
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -26,9 +27,14 @@
             margin: 5px;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
         }
         button:hover {
             background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
         }
         .question {
             margin-bottom: 20px;
@@ -36,7 +42,13 @@
         .options label {
             display: block;
             margin: 10px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
             cursor: pointer;
+        }
+        .options label:hover {
+            background-color: #e9e9e9;
         }
         .progress-container {
             margin: 20px 0;
@@ -51,22 +63,66 @@
             background-color: #4CAF50;
             border-radius: 5px;
             width: 0%;
+            transition: width 0.3s;
         }
         .hidden {
             display: none;
         }
-        .result-img {
-            max-width: 200px;
-            margin: 20px auto;
-            display: block;
+        .result-percentages {
+            margin: 20px 0;
+        }
+        .percentage-item {
+            margin: 15px 0;
+        }
+        .percentage-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        .percentage-bar {
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .percentage-fill {
+            height: 100%;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            text-align: right;
+            padding-right: 10px;
+            line-height: 20px;
+            font-size: 14px;
+            transition: width 0.5s;
+        }
+        .sanguinis { background-color: #FF5722; }
+        .koleris { background-color: #F44336; }
+        .plegmatis { background-color: #4CAF50; }
+        .melankolis { background-color: #2196F3; }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        #result-title {
+            color: #2c3e50;
+            margin-top: 20px;
+        }
+        #result-desc {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div id="intro-container">
-            <h1>KUIS KEPRIBADIAN (Playgirls Models)</h1>
-            <p>Tes ini akan membantu mengidentifikasi tipe kepribadian Anda berdasarkan 4 kategori.</p>
+            <h1>Kuis Kepribadian | Playgirls Models</h1>
+            <p>Tes ini akan mengidentifikasi tipe kepribadian Anda berdasarkan 4 kategori: Sanguinis, Koleris, Plegmatis, dan Melankolis.</p>
+            <p>Total ada 28 pertanyaan. Jawablah dengan jujur sesuai dengan diri Anda.</p>
             <button id="start-btn">Mulai Tes</button>
         </div>
 
@@ -82,16 +138,21 @@
                 <div id="option-container" class="options"></div>
             </div>
             <div class="nav-buttons">
-                <button id="prev-btn">Sebelumnya</button>
+                <button id="prev-btn" disabled>Sebelumnya</button>
                 <button id="next-btn">Selanjutnya</button>
             </div>
         </div>
 
         <div id="result-container" class="hidden">
             <h2>Hasil Tes Kepribadian Anda</h2>
-            <img id="result-img" class="result-img" src="" alt="Gambar Kepribadian">
             <h3 id="result-title"></h3>
             <p id="result-desc"></p>
+            
+            <div class="result-percentages">
+                <h4>Komposisi Kepribadian:</h4>
+                <div id="percentages-container"></div>
+            </div>
+            
             <button id="restart-btn">Ulangi Tes</button>
         </div>
     </div>
@@ -114,7 +175,7 @@
             { id: 10, text: "Saya suka menetapkan target yang menantang", category: "koleris", reversed: false },
             { id: 11, text: "Saya tidak sabar dengan orang yang bekerja lambat", category: "koleris", reversed: false },
             { id: 12, text: "Saya fokus pada hasil daripada proses", category: "koleris", reversed: false },
-            { id: 13, text: "Saya senang memecahkan masalah yang kompleks", category: "koleris", reversed: false },
+            { id: 13, text: "Saya senang memecahkan masalah yang compleks", category: "koleris", reversed: false },
             { id: 26, text: "Saya cenderung langsung mengambil tindakan ketika melihat masalah", category: "koleris", reversed: false },
             
             // Plegmatis (7 pertanyaan)
@@ -137,11 +198,18 @@
         ];
 
         // Acak urutan pertanyaan
-        questions.sort(() => Math.random() - 0.5);
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        const shuffledQuestions = shuffleArray([...questions]);
 
         // Variabel
         let currentQuestionIndex = 0;
-        let answers = [];
+        let answers = Array(shuffledQuestions.length).fill(null);
         const introContainer = document.getElementById('intro-container');
         const quizContainer = document.getElementById('quiz-container');
         const resultContainer = document.getElementById('result-container');
@@ -154,28 +222,22 @@
         const questionCounter = document.getElementById('question-counter');
         const resultTitle = document.getElementById('result-title');
         const resultDesc = document.getElementById('result-desc');
-        const resultImg = document.getElementById('result-img');
+        const percentagesContainer = document.getElementById('percentages-container');
         const restartBtn = document.getElementById('restart-btn');
-
-        // Gambar hasil
-        const personalityImages = {
-            sanguinis: "https://via.placeholder.com/200/FFC107/000000?text=SANGUINIS",
-            koleris: "https://via.placeholder.com/200/F44336/FFFFFF?text=KOLERIS",
-            plegmatis: "https://via.placeholder.com/200/4CAF50/FFFFFF?text=PLEGMATIS",
-            melankolis: "https://via.placeholder.com/200/2196F3/FFFFFF?text=MELANKOLIS"
-        };
 
         // Deskripsi hasil
         const personalityDescriptions = {
-            sanguinis: "Anda adalah orang yang bersemangat, hidup, dan menyenangkan. Anda suka menjadi pusat perhatian dan membuat orang lain tertawa.",
-            koleris: "Anda adalah pemimpin alami yang tegas dan berorientasi pada tujuan. Anda menyukai tantangan dan selalu mencari solusi.",
-            plegmatis: "Anda adalah pribadi yang tenang, sabar, dan harmonis. Anda menghindari konflik dan lebih suka hidup yang stabil.",
-            melankolis: "Anda adalah pemikir yang mendalam, perfeksionis, dan detail-oriented. Anda sangat memperhatikan kualitas dan akurasi."
+            sanguinis: "Anda orang yang bersemangat, hidup, dan menyenangkan. Anda suka menjadi pusat perhatian dan membuat orang lain tertawa. Kekuatan Anda adalah antusiasme dan kemampuan bersosialisasi.",
+            koleris: "Anda adalah pemimpin alami yang tegas dan berorientasi pada tujuan. Anda menyukai tantangan dan selalu mencari solusi. Kekuatan Anda adalah tekad dan kemampuan mengambil keputusan.",
+            plegmatis: "Anda adalah pribadi yang tenang, sabar, dan harmonis. Anda menghindari konflik dan lebih suka hidup yang stabil. Kekuatan Anda adalah ketenangan dan kemampuan menjadi pendamai.",
+            melankolis: "Anda adalah pemikir yang mendalam, perfeksionis, dan detail-oriented. Anda sangat memperhatikan kualitas dan akurasi. Kekuatan Anda adalah analisis mendalam dan perhatian terhadap detail."
         };
 
         // Mulai kuis
         startBtn.addEventListener('click', startQuiz);
         restartBtn.addEventListener('click', restartQuiz);
+        nextBtn.addEventListener('click', nextQuestion);
+        prevBtn.addEventListener('click', prevQuestion);
 
         function startQuiz() {
             introContainer.classList.add('hidden');
@@ -184,43 +246,52 @@
         }
 
         function showQuestion() {
-            const question = questions[currentQuestionIndex];
+            const question = shuffledQuestions[currentQuestionIndex];
             questionText.textContent = question.text;
             
             // Update progress
-            progressBar.style.width = `${((currentQuestionIndex + 1) / questions.length) * 100}%`;
-            questionCounter.textContent = `Pertanyaan ${currentQuestionIndex + 1} dari ${questions.length}`;
+            const progress = ((currentQuestionIndex + 1) / shuffledQuestions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            questionCounter.textContent = `Pertanyaan ${currentQuestionIndex + 1} dari ${shuffledQuestions.length}`;
             
             // Tampilkan opsi
             optionContainer.innerHTML = '';
-            const options = ['Sangat Tidak Setuju', 'Tidak Setuju', 'Netral', 'Setuju', 'Sangat Setuju'];
+            const options = [
+                'Sangat Tidak Setuju',
+                'Tidak Setuju',
+                'Netral',
+                'Setuju',
+                'Sangat Setuju'
+            ];
             
             options.forEach((option, index) => {
+                const radioId = `option-${index}`;
                 const label = document.createElement('label');
                 const input = document.createElement('input');
                 input.type = 'radio';
                 input.name = 'option';
+                input.id = radioId;
                 input.value = index + 1;
                 
-                // Cek jika sudah dijawab sebelumnya
                 if (answers[currentQuestionIndex] === index + 1) {
                     input.checked = true;
                 }
                 
+                label.htmlFor = radioId;
                 label.appendChild(input);
                 label.appendChild(document.createTextNode(option));
                 optionContainer.appendChild(label);
             });
             
-            // Atur visibilitas tombol
-            prevBtn.style.display = currentQuestionIndex === 0 ? 'none' : 'inline-block';
-            nextBtn.textContent = currentQuestionIndex === questions.length - 1 ? 'Selesai' : 'Selanjutnya';
+            // Update tombol navigasi
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.textContent = currentQuestionIndex === shuffledQuestions.length - 1 ? 'Selesai' : 'Selanjutnya';
         }
 
         function nextQuestion() {
             const selectedOption = document.querySelector('input[name="option"]:checked');
             
-            if (!selectedOption && answers[currentQuestionIndex] === undefined) {
+            if (!selectedOption && answers[currentQuestionIndex] === null) {
                 alert('Silakan pilih salah satu jawaban');
                 return;
             }
@@ -230,7 +301,7 @@
                 answers[currentQuestionIndex] = parseInt(selectedOption.value);
             }
             
-            if (currentQuestionIndex < questions.length - 1) {
+            if (currentQuestionIndex < shuffledQuestions.length - 1) {
                 currentQuestionIndex++;
                 showQuestion();
             } else {
@@ -239,15 +310,17 @@
         }
 
         function prevQuestion() {
-            currentQuestionIndex--;
-            showQuestion();
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion();
+            }
         }
 
         function showResults() {
             quizContainer.classList.add('hidden');
             resultContainer.classList.remove('hidden');
             
-            // Hitung skor
+            // Hitung skor untuk setiap kategori
             const scores = {
                 sanguinis: 0,
                 koleris: 0,
@@ -255,39 +328,91 @@
                 melankolis: 0
             };
             
-            questions.forEach((question, index) => {
+            shuffledQuestions.forEach((question, index) => {
                 const answerValue = answers[index] || 3; // Default netral jika tidak dijawab
                 scores[question.category] += question.reversed ? (6 - answerValue) : answerValue;
             });
             
-            // Tentukan kepribadian dominan
-            let maxScore = 0;
-            let personalityType = '';
+            // Hitung total skor
+            const totalScore = Object.values(scores).reduce((a, b) => a + b, 0);
             
-            for (const type in scores) {
-                if (scores[type] > maxScore) {
-                    maxScore = scores[type];
-                    personalityType = type;
+            // Hitung persentase
+            let percentages = {
+                sanguinis: Math.round((scores.sanguinis / totalScore) * 100),
+                koleris: Math.round((scores.koleris / totalScore) * 100),
+                plegmatis: Math.round((scores.plegmatis / totalScore) * 100),
+                melankolis: Math.round((scores.melankolis / totalScore) * 100)
+            };
+            
+            // Koreksi pembulatan jika total tidak 100%
+            const adjustPercentages = (percentages) => {
+                let total = Object.values(percentages).reduce((a, b) => a + b, 0);
+                const diff = 100 - total;
+                if (diff !== 0) {
+                    const maxKey = Object.keys(percentages).reduce((a, b) => 
+                        percentages[a] > percentages[b] ? a : b
+                    );
+                    percentages[maxKey] += diff;
                 }
-            }
+                return percentages;
+            };
             
-            // Tampilkan hasil
-            resultTitle.textContent = `Kepribadian Anda: ${personalityType.toUpperCase()}`;
+            percentages = adjustPercentages(percentages);
+            
+            // Tentukan kepribadian dominan
+            const personalityType = Object.keys(percentages).reduce((a, b) => 
+                percentages[a] > percentages[b] ? a : b
+            );
+            
+            // Tampilkan hasil utama
+            resultTitle.textContent = `Kepribadian Dominan: ${personalityType.toUpperCase()}`;
             resultDesc.textContent = personalityDescriptions[personalityType];
-            resultImg.src = personalityImages[personalityType];
+            
+            // Tampilkan persentase
+            percentagesContainer.innerHTML = '';
+            
+            // Urutkan dari persentase tertinggi
+            const sortedTypes = Object.keys(percentages).sort((a, b) => percentages[b] - percentages[a]);
+            
+            sortedTypes.forEach(type => {
+                const percentageItem = document.createElement('div');
+                percentageItem.className = 'percentage-item';
+                
+                const percentageLabel = document.createElement('div');
+                percentageLabel.className = 'percentage-label';
+                
+                const typeName = document.createElement('span');
+                typeName.textContent = type.toUpperCase();
+                
+                const percentageValue = document.createElement('span');
+                percentageValue.textContent = `${percentages[type]}%`;
+                
+                percentageLabel.appendChild(typeName);
+                percentageLabel.appendChild(percentageValue);
+                
+                const percentageBar = document.createElement('div');
+                percentageBar.className = 'percentage-bar';
+                
+                const percentageFill = document.createElement('div');
+                percentageFill.className = `percentage-fill ${type}`;
+                percentageFill.style.width = `${percentages[type]}%`;
+                percentageFill.textContent = `${percentages[type]}%`;
+                
+                percentageBar.appendChild(percentageFill);
+                percentageItem.appendChild(percentageLabel);
+                percentageItem.appendChild(percentageBar);
+                
+                percentagesContainer.appendChild(percentageItem);
+            });
         }
 
         function restartQuiz() {
             currentQuestionIndex = 0;
-            answers = [];
-            questions.sort(() => Math.random() - 0.5);
+            answers = Array(shuffledQuestions.length).fill(null);
+            shuffleArray(shuffledQuestions);
             resultContainer.classList.add('hidden');
             introContainer.classList.remove('hidden');
         }
-
-        // Event listeners
-        nextBtn.addEventListener('click', nextQuestion);
-        prevBtn.addEventListener('click', prevQuestion);
     </script>
 </body>
 </html>
