@@ -126,7 +126,7 @@
 <body>
     <div class="container">
         <div id="intro-container">
-            <h1>Kuis Kepribadian</h1>
+            <h1>Kuis Kepribadian | Playgirls Models</h1>
             <p>Tes ini akan mengidentifikasi tipe kepribadian Anda berdasarkan 4 kategori: Sanguinis, Koleris, Plegmatis, dan Melankolis.</p>
             <p>Total ada 28 pertanyaan. Jawablah dengan jujur sesuai dengan diri Anda.</p>
             <button id="start-btn">Mulai Tes</button>
@@ -414,25 +414,33 @@
                 percentagesContainer.appendChild(percentageItem);
             });
         }
-
-        function shareWhatsApp() {
-            const persentase = document.getElementById('percentages-container').innerText;
-            const dominant = document.getElementById('result-title').innerText;
-            
-            const text = `Kuis Kepribadian - Sanguinis, Koleris, Plegmatis, Melankolis  
-dru90n.github.io  
-
-Hasil Kuis Kepribadian Saya:  
-
-${persentase}  
-
-${dominant}  
-
-Coba kuis ini juga: ${window.location.href}`;
-
-            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-        }
-
+function shareWhatsApp() {
+    // Ambil semua data persentase
+    const percentageItems = document.querySelectorAll('.percentage-item');
+    let percentagesText = '';
+    
+    // Warna emoji untuk setiap tipe
+    const emojiMap = {
+        sanguinis: '🟥',
+        koleris: '🟦',
+        plegmatis: '🟩',
+        melankolis: '🟪'
+    };
+    
+    // Format setiap baris persentase
+    percentageItems.forEach(item => {
+        const type = item.querySelector('span:first-child').textContent.toLowerCase();
+        const value = item.querySelector('span:last-child').textContent;
+        percentagesText += `${emojiMap[type]} ${type.charAt(0).toUpperCase() + type.slice(1)}: ${value}\n`;
+    });
+    
+    // Format teks lengkap
+    const text = `📊 Hasil Kuis Kepribadian Saya:\n\n${percentagesText}\n✨ ${document.getElementById('result-title').textContent}\n\n🔹 Coba kuis ini juga: ${window.location.href}`;
+    
+    // Encode untuk URL WhatsApp
+    const encodedText = encodeURIComponent(text);
+    window.open(`https://wa.me/?text=${encodedText}`, '_blank');
+}
         function restartQuiz() {
             currentQuestionIndex = 0;
             answers = Array(shuffledQuestions.length).fill(null);
