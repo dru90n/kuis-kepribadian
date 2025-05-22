@@ -153,7 +153,8 @@
                 <div id="percentages-container"></div>
             </div>
             
-            <button id="restart-btn">Ulangi Tes</button>
+            <button id="whatsapp-share">Share via WhatsApp</button>
+  <button id="restart-btn">Ulangi Tes</button>
         </div>
     </div>
 
@@ -413,6 +414,13 @@
             resultContainer.classList.add('hidden');
             introContainer.classList.remove('hidden');
         }
+// Kode share WhatsApp
+document.getElementById('whatsapp-share').addEventListener('click', function() {
+  const resultText = `Hasil Tes Kepribadian Saya: ${resultTitle.textContent}`;
+  const shareUrl = `https://wa.me/?text=${encodeURIComponent(resultText)}`;
+  window.open(shareUrl, '_blank');
+});
+
     </script>
 </body>
 </html>
