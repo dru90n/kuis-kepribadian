@@ -115,12 +115,18 @@
             border-radius: 5px;
             border-left: 4px solid #4CAF50;
         }
+        #whatsapp-share {
+            background-color: #25D366;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div id="intro-container">
-            <h1>Kuis Kepribadian | Playgirls Models</h1>
+            <h1>Kuis Kepribadian</h1>
             <p>Tes ini akan mengidentifikasi tipe kepribadian Anda berdasarkan 4 kategori: Sanguinis, Koleris, Plegmatis, dan Melankolis.</p>
             <p>Total ada 28 pertanyaan. Jawablah dengan jujur sesuai dengan diri Anda.</p>
             <button id="start-btn">Mulai Tes</button>
@@ -152,12 +158,9 @@
                 <h4>Komposisi Kepribadian:</h4>
                 <div id="percentages-container"></div>
             </div>
-      <div id="result-container" class="hidden">
-  <!-- ... konten hasil lainnya ... -->
-  
-  <button id="whatsapp-share">📱 Share via WhatsApp</button> <!-- BARIS INI DITAMBAHKAN -->
-  <button id="restart-btn">Ulangi Tes</button>
-</div>
+            
+            <button id="whatsapp-share">📱 Share via WhatsApp</button>
+            <button id="restart-btn">Ulangi Tes</button>
         </div>
     </div>
 
@@ -171,7 +174,7 @@
             { id: 4, text: "Saya sering membuat orang tertawa dengan cerita-cerita saya", category: "sanguinis", reversed: false },
             { id: 5, text: "Saya senang menjadi pusat perhatian", category: "sanguinis", reversed: false },
             { id: 6, text: "Saya mudah beradaptasi dengan situasi baru", category: "sanguinis", reversed: false },
-            { id: 7, text: "Saya senang memulai percakapan dengan orang asing", category: "sanguinis", reversed: false },
+            { id: 7, text: "Saya senang memulai percakapan dengan orang asian", category: "sanguinis", reversed: false },
             
             // Koleris (7 pertanyaan)
             { id: 8, text: "Saya cenderung mengambil alih kepemimpinan dalam kelompok", category: "koleris", reversed: false },
@@ -179,7 +182,7 @@
             { id: 10, text: "Saya suka menetapkan target yang menantang", category: "koleris", reversed: false },
             { id: 11, text: "Saya tidak sabar dengan orang yang bekerja lambat", category: "koleris", reversed: false },
             { id: 12, text: "Saya fokus pada hasil daripada proses", category: "koleris", reversed: false },
-            { id: 13, text: "Saya senang memecahkan masalah yang compleks", category: "koleris", reversed: false },
+            { id: 13, text: "Saya senang memecahkan masalah yang kompleks", category: "koleris", reversed: false },
             { id: 26, text: "Saya cenderung langsung mengambil tindakan ketika melihat masalah", category: "koleris", reversed: false },
             
             // Plegmatis (7 pertanyaan)
@@ -228,6 +231,7 @@
         const resultDesc = document.getElementById('result-desc');
         const percentagesContainer = document.getElementById('percentages-container');
         const restartBtn = document.getElementById('restart-btn');
+        const whatsappShareBtn = document.getElementById('whatsapp-share');
 
         // Deskripsi hasil
         const personalityDescriptions = {
@@ -242,6 +246,7 @@
         restartBtn.addEventListener('click', restartQuiz);
         nextBtn.addEventListener('click', nextQuestion);
         prevBtn.addEventListener('click', prevQuestion);
+        whatsappShareBtn.addEventListener('click', shareWhatsApp);
 
         function startQuiz() {
             introContainer.classList.add('hidden');
@@ -269,7 +274,7 @@
             ];
             
             options.forEach((option, index) => {
-                const radioId = `option-${index}`;
+                const radioId = `option-${currentQuestionIndex}-${index}`;
                 const label = document.createElement('label');
                 const input = document.createElement('input');
                 input.type = 'radio';
@@ -410,6 +415,24 @@
             });
         }
 
+        function shareWhatsApp() {
+            const persentase = document.getElementById('percentages-container').innerText;
+            const dominant = document.getElementById('result-title').innerText;
+            
+            const text = `Kuis Kepribadian - Sanguinis, Koleris, Plegmatis, Melankolis  
+dru90n.github.io  
+
+Hasil Kuis Kepribadian Saya:  
+
+${persentase}  
+
+${dominant}  
+
+Coba kuis ini juga: ${window.location.href}`;
+
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
         function restartQuiz() {
             currentQuestionIndex = 0;
             answers = Array(shuffledQuestions.length).fill(null);
@@ -417,32 +440,6 @@
             resultContainer.classList.add('hidden');
             introContainer.classList.remove('hidden');
         }
-// Kode share WhatsApp
-document.getElementById('whatsapp-share').addEventListener('click', function() {
-  const resultText = `Hasil Tes Kepribadian Saya: ${resultTitle.textContent}`;
-  const shareUrl = `https://wa.me/?text=${encodeURIComponent(resultText)}`;
-  window.open(shareUrl, '_blank');
-});
-// [Kode sebelumnya...]
-
-// ===== TAMBAHKAN KODE INI DI BARIS TERAKHIR SEBELUM </script> =====
-document.getElementById('whatsapp-share').addEventListener('click', function() {
-  const persentase = document.getElementById('percentages-container').innerText;
-  const dominant = document.getElementById('result-title').innerText;
-  
-  const text = `Kuis Kepribadian - Sanguinis, Koleris, Plegmatis, Melankolis  
-dru90n.github.io
-
-Hasil Kuis Kepribadian Saya:
-
-${persentase}
-
-${dominant}
-
-Coba kuis ini juga: ${window.location.href}`;
-
-  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
-});
     </script>
 </body>
 </html>
