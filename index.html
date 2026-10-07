@@ -148,20 +148,37 @@ input-section {
             <p>Tes ini akan mengidentifikasi tipe kepribadian Anda berdasarkan 4 kategori: Sanguinis, Koleris, Plegmatis, dan Melankolis.</p>
             <p>Total ada 28 pertanyaan. Jawablah dengan jujur sesuai dengan diri Anda.</p>
             
-            <div class="input-section">
-                <label for="user-name">Nama Anda:</label>
-                <input type="text" id="user-name" placeholder="Masukkan nama Anda">
-                
-                <label for="user-city">Kota:</label>
-                <select id="user-city">
-                    <option value="">Pilih kota</option>
-                    <option value="Malang">Malang</option>
-                    <option value="Semarang">Semarang</option>
-                    <option value="Jakarta">Jakarta</option>
-                    <option value="Bali">Bali</option>
-                    <option value="Surabaya">Surabaya</option>
-                </select>
-            </div>
+           <div class="input-section">
+    <label for="user-name">Nama Anda:</label>
+    <input type="text" id="user-name" placeholder="Masukkan nama Anda">
+    
+    <label for="user-city">Kota:</label>
+    <select id="user-city">
+        <option value="">Pilih kota</option>
+        <option value="Malang">Malang</option>
+        <option value="Semarang">Semarang</option>
+        <option value="Jakarta">Jakarta</option>
+        <option value="Bali">Bali</option>
+        <option value="Surabaya">Surabaya</option>
+    </select>
+
+    <!-- Input Nomor WhatsApp -->
+    <label for="user-whatsapp">No. WhatsApp:</label>
+    <input type="tel" id="user-whatsapp" placeholder="Contoh: 081234567890" pattern="[0-9]*">
+
+    <!-- Input Media Sosial -->
+    <label for="user-sosmed-platform">Platform Sosmed:</label>
+    <select id="user-sosmed-platform">
+        <option value="">Pilih platform</option>
+        <option value="Instagram">Instagram</option>
+        <option value="TikTok">TikTok</option>
+        <option value="Facebook">Facebook</option>
+        <option value="X">X (Twitter)</option>
+    </select>
+
+    <label for="user-sosmed-handle">Username Sosmed:</label>
+    <input type="text" id="user-sosmed-handle" placeholder="Contoh: @username">
+</div>
 
             <button id="start-btn">Mulai Tes</button>
         </div>
